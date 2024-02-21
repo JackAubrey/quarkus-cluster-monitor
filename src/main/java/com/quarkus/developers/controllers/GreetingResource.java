@@ -1,4 +1,4 @@
-package com.quarkus.developers;
+package com.quarkus.developers.controllers;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
