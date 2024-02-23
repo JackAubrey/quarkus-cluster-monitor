@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @ApplicationScoped
 public class WatcherService {
     private final OpenShiftClient client;
+
     private Map<String, Watch> map = new ConcurrentHashMap<>();
 
     void onStart(@Observes StartupEvent ev) {

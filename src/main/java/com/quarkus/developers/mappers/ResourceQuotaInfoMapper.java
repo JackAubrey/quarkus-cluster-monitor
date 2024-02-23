@@ -1,6 +1,6 @@
 package com.quarkus.developers.mappers;
 
-import com.quarkus.developers.data.ResourceQuotaInfo;
+import com.quarkus.developers.events.ResourceQuotaInfo;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

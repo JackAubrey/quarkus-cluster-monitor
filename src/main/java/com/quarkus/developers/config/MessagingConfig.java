@@ -13,7 +13,7 @@ import jakarta.ws.rs.Produces;
 @Dependent
 public class MessagingConfig {
     @Produces
-    @IfBuildProperty(name = "monitor.produce.type", stringValue = "jms")
+    @IfBuildProperty(name = "monitor.producer.type", stringValue = "jms")
     @ApplicationScoped
     JmsProducer jmsProducer(ConnectionFactory connectionFactory, ObjectMapper objectMapper) {
         return new JmsProducer(connectionFactory, objectMapper);

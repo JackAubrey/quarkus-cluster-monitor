@@ -1,6 +1,6 @@
 package com.quarkus.developers.services;
 
-import com.quarkus.developers.data.ResourceQuotaInfo;
+import com.quarkus.developers.events.ResourceQuotaInfo;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.openshift.api.model.Project;

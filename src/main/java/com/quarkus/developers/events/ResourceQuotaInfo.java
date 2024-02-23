@@ -1,4 +1,4 @@
-package com.quarkus.developers.data;
+package com.quarkus.developers.events;
 
 import lombok.Builder;
 import lombok.Data;
