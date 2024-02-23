@@ -1,9 +1,9 @@
 package com.quarkus.developers.data;
 
-import io.fabric8.kubernetes.api.model.Quantity;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 @Data
@@ -11,8 +11,8 @@ import java.util.Map;
 public class ResourceQuotaInfo {
     private String name;
     private String namespace;
-    private Map<String, Quantity> specHard;
-    private Map<String, Quantity> statusHard;
-    private Map<String, Quantity> statusUsed;
+    private Map<String, BigDecimal> specHard;
+    private Map<String, BigDecimal> statusHard;
+    private Map<String, BigDecimal> statusUsed;
 
 }
