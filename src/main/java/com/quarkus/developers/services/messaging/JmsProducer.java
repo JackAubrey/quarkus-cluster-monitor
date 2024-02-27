@@ -1,11 +1,9 @@
 package com.quarkus.developers.services.messaging;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.quarkus.developers.util.AssertUtil;
-import jakarta.jms.ConnectionFactory;
-import jakarta.jms.JMSContext;
-import jakarta.jms.Message;
-import jakarta.jms.Session;
+import jakarta.jms.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,8 +28,12 @@ public class JmsProducer implements MessagingProducer {
 
             log.debug("Sending message {} on the queue {} ", msg.getBody(String.class), queueName);
             context.createProducer().send(context.createQueue(queueName), msg);
-        } catch (Exception ex) {
+        } catch (JMSException | JsonProcessingException ex) {
             log.error("Unable to send message to JMS queue {}", queueName, ex);
+            throw new MessagingProducerException(ex);
+        } catch (JMSRuntimeException ex) {
+            log.error("Unable connect with JMS queue {}", queueName, ex);
+            throw ex;
         }
     }
 }
