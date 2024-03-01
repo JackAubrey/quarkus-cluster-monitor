@@ -1,9 +1,12 @@
 package com.quarkus.developers.services;
 
-import com.quarkus.developers.events.ResourceQuotaInfo;
-import com.quarkus.developers.mappers.ResourceQuotaInfoMapper;
+import com.quarkus.developers.dtos.PodDto;
+import com.quarkus.developers.dtos.ResourceQuotaDto;
+import com.quarkus.developers.mappers.PodEventMapper;
+import com.quarkus.developers.mappers.ResourceQuotaDtoMapper;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.openshift.api.model.Project;
 import io.fabric8.openshift.client.OpenShiftClient;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -18,7 +21,8 @@ import java.util.List;
 @ApplicationScoped
 public class MonitorFacadeImpl implements MonitorFacade {
     private final OpenShiftClient client;
-    private final ResourceQuotaInfoMapper resourceQuotaInfoMapper;
+    private final ResourceQuotaDtoMapper resourceQuotaDtoMapper;
+    private final PodEventMapper podEventMapper;
 
     @Override
     public List<Namespace> listNamespaces() {
@@ -30,32 +34,48 @@ public class MonitorFacadeImpl implements MonitorFacade {
         return client.projects().list().getItems();
     }
 
-    public List<Pod> listPods() {
-        return client.pods().list().getItems();
+    public List<PodDto> listPods() {
+        return convertPods(client.pods().list().getItems());
     }
 
     @Override
-    public List<Pod> listPods(String namespace) {
-        return client.pods().inNamespace(namespace).list().getItems();
+    public List<PodDto> listPods(String namespace) {
+        return convertPods(client.pods().inNamespace(namespace).list().getItems());
     }
 
     @Override
-    public List<ResourceQuotaInfo> listResourceQuotas() {
+    public List<ResourceQuotaDto> listResourceQuotas() {
         log.info("Resource Quotas");
-        List<ResourceQuotaInfo> list = new ArrayList<>();
-
-        client.resourceQuotas().list().getItems().forEach(quota -> list.add(resourceQuotaInfoMapper.toSimpleQuotaInfo(quota)));
-
-        return list;
+        return convertResourceQuotas(client.resourceQuotas().list().getItems());
     }
 
     @Override
-    public List<ResourceQuotaInfo> listResourceQuotas(String namespace) {
+    public List<ResourceQuotaDto> listResourceQuotas(String namespace) {
         log.info("Resource Quotas in namespace {}", namespace);
-        List<ResourceQuotaInfo> list = new ArrayList<>();
+        return convertResourceQuotas(client.resourceQuotas().inNamespace(namespace).list().getItems());
+    }
 
-        client.resourceQuotas().inNamespace(namespace).list().getItems().forEach(quota -> list.add(resourceQuotaInfoMapper.toSimpleQuotaInfo(quota)));
+    List<ResourceQuotaDto> convertResourceQuotas(List<ResourceQuota> quotas) {
+        if(quotas != null && !quotas.isEmpty()) {
+            List<ResourceQuotaDto> list = new ArrayList<>();
 
-        return list;
+            quotas.forEach(quota -> list.add(resourceQuotaDtoMapper.toDto(quota)));
+
+            return list;
+        } else {
+           return new ArrayList<>();
+        }
+    }
+
+    List<PodDto> convertPods(List<Pod> pods) {
+        if(pods != null && !pods.isEmpty()) {
+            List<PodDto> list = new ArrayList<>();
+
+            pods.forEach(pod -> list.add(podEventMapper.toDto(pod)));
+
+            return list;
+        } else {
+            return new ArrayList<>();
+        }
     }
 }
