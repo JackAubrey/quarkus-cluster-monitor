@@ -18,6 +18,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,27 +33,48 @@ public class WatcherServiceContainer {
     @ConfigProperty(name = "watcher.initial-delay.seconds", defaultValue = "10")
     int initialDelayInSeconds;
 
+    @ConfigProperty(name = "watcher.defer.watchers.init.in-seconds", defaultValue = "1")
+    int deferWatchersInSec;
+
     void onStart(@Observes StartupEvent ev) {
         log.info(">>>>>>>>>>>>>>>>>>>>> Quarkus is ready.");
         log.info(">>>>>>>>>>>>>>>>>>>>> The Watchable Items will be initialized in {} seconds", initialDelayInSeconds);
-        CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(initialDelayInSeconds);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                return false;
-            }
-            return true;
-        });
+        CompletableFuture<Boolean> future = CompletableFuture.supplyAsync( () -> deferredOps(initialDelayInSeconds));
 
         future.thenAccept(result -> {
             log.info(">>>>>>>>>>>>>>>>>>>>> The Watchable Items has been initialized: {}", result);
             if(Boolean.TRUE.equals(result)) {
-                log.info(">>>>>>>>>>>>>>>>>>>>> Found Watchable Items. Starting watching: {}", instances.stream().count());
-                instances.forEach(ws -> ws.startWatching(client)
-                        .ifPresent(l -> l.forEach(e -> addWatcher(e.nameSpace(), e.watch()))));
+                log.info(">>>>>>>>>>>>>>>>>>>>> Found {} Watchable.", instances.stream().count());
+                AtomicInteger defInc = new AtomicInteger(deferWatchersInSec);
+                instances.forEach(watchableItem -> deferWatcherInit(watchableItem, defInc.getAndAdd(deferWatchersInSec)));
+            } else {
+                log.error(">>>>>>>>>>>>>>>>>>>>> Unable to start the Watchable Items ");
             }
         });
+    }
+
+    void deferWatcherInit(WatchableItem watchableItem, int delay) {
+        CompletableFuture<Boolean> future = CompletableFuture.supplyAsync( () -> deferredOps(delay));
+
+        future.thenAccept(result -> {
+            log.info(">>> Start watcher {} ", watchableItem.getClass().getName());
+            if(Boolean.TRUE.equals(result)) {
+                watchableItem.startWatching(client)
+                        .ifPresent(l -> l.forEach(e -> addWatcher(e.nameSpace(), e.watch())));
+            } else {
+                log.error(">>> Unable to start watcher {} ", watchableItem.getClass().getName());
+            }
+        });
+    }
+
+    boolean deferredOps(int seconds) {
+        try {
+            TimeUnit.SECONDS.sleep(initialDelayInSeconds);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return false;
+        }
+        return true;
     }
 
     void addWatcher(String nameSpace, Watch watcher) {

@@ -1,6 +1,6 @@
 package com.quarkus.developers.services.watching.watchers;
 
-import com.quarkus.developers.dtos.ResourceQuotaDto;
+import com.quarkus.common.data.dtos.ResourceQuotaDto;
 import com.quarkus.developers.mappers.ResourceQuotaDtoMapper;
 import com.quarkus.developers.services.watching.WatchNotifier;
 import io.fabric8.kubernetes.api.model.ResourceQuota;

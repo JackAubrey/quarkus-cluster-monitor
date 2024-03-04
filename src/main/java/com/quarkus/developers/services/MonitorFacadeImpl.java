@@ -1,7 +1,7 @@
 package com.quarkus.developers.services;
 
-import com.quarkus.developers.dtos.PodDto;
-import com.quarkus.developers.dtos.ResourceQuotaDto;
+import com.quarkus.common.data.dtos.PodDto;
+import com.quarkus.common.data.dtos.ResourceQuotaDto;
 import com.quarkus.developers.mappers.PodEventMapper;
 import com.quarkus.developers.mappers.ResourceQuotaDtoMapper;
 import io.fabric8.kubernetes.api.model.Namespace;

@@ -1,6 +1,6 @@
 package com.quarkus.developers.services.messaging.emitters;
 
-import com.quarkus.developers.services.messaging.events.ClusterResourceEvent;
+import com.quarkus.common.data.events.ClusterResourceEvent;
 import io.quarkus.arc.properties.IfBuildProperty;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -32,21 +32,21 @@ public class KafkaNotifier implements ManagedEmitter {
         event.setProducer("KAFKA");
 
         Message<ClusterResourceEvent> message = Message.of(event, () -> {
-                    log.debug("Acknowledged event {}", event);
+                    log.debug("KAFKA Emitter || Acknowledged event {}", event);
                     // Called when the message is acknowledged.
                     return CompletableFuture.completedFuture(null);
                 },
                 reason -> {
-                    log.error("Error during emitting event {} on kafka {}", event, reason.getLocalizedMessage(), reason);
+                    log.error("KAFKA Emitter || Error during emitting event {} on kafka {}", event, reason.getLocalizedMessage(), reason);
                     // Called when the message is acknowledged negatively.
                     return CompletableFuture.completedFuture(null);
                 });
 
         if(kafkaEmitter.hasRequests()) {
-            log.info("Emitting event on Kafka Channel {}", event);
+            log.info("KAFKA Emitter || Emitting event on Kafka Channel {}", event);
             kafkaEmitter.send(message);
         } else {
-            log.warn("Unable to emit event on Kafka Channel because no subscribers found {}", event);
+            log.warn("KAFKA Emitter || Unable to emit event on Kafka Channel because no subscribers found {}", event);
         }
     }
 }

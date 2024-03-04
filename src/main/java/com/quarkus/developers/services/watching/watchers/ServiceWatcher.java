@@ -1,6 +1,6 @@
 package com.quarkus.developers.services.watching.watchers;
 
-import com.quarkus.developers.dtos.ServiceDto;
+import com.quarkus.common.data.dtos.ServiceDto;
 import com.quarkus.developers.mappers.ServiceDtoMapper;
 import com.quarkus.developers.services.watching.WatchNotifier;
 import io.fabric8.kubernetes.api.model.Service;

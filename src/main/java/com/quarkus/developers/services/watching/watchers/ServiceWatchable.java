@@ -29,7 +29,7 @@ class ServiceWatchable implements WatchableItem {
         if(nameSpaces != null && !nameSpaces.isEmpty()) {
             List<WatchedItem> list = new ArrayList<>();
             nameSpaces.forEach(nameSpace -> {
-                log.info("Going to watch Service for the namespace: {}", nameSpace);
+                log.info(">> Going to watch Service for the namespace: {}", nameSpace);
                 Watch watched = client.services().inNamespace(nameSpace).watch(serviceWatcher);
                 list.add(new WatchedItem(nameSpace, watched));
             });

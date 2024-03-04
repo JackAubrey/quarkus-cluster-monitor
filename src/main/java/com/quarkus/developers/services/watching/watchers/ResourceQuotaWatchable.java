@@ -29,7 +29,7 @@ class ResourceQuotaWatchable implements WatchableItem {
         if(nameSpaces != null && !nameSpaces.isEmpty()) {
             List<WatchedItem> list = new ArrayList<>();
             nameSpaces.forEach(nameSpace -> {
-                log.info("Going to watch ResourceQuotas for the namespace: {}", nameSpace);
+                log.info(">> Going to watch ResourceQuotas for the namespace: {}", nameSpace);
                 Watch watched = client.resourceQuotas().inNamespace(nameSpace).watch(resourceQuotaWatcher);
                 list.add(new WatchedItem(nameSpace, watched));
             });

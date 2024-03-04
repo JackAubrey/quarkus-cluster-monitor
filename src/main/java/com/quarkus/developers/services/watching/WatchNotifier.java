@@ -1,9 +1,9 @@
 package com.quarkus.developers.services.watching;
 
-import com.quarkus.developers.dtos.DeploymentDto;
-import com.quarkus.developers.dtos.PodDto;
-import com.quarkus.developers.dtos.ResourceQuotaDto;
-import com.quarkus.developers.dtos.ServiceDto;
+import com.quarkus.common.data.dtos.DeploymentDto;
+import com.quarkus.common.data.dtos.PodDto;
+import com.quarkus.common.data.dtos.ResourceQuotaDto;
+import com.quarkus.common.data.dtos.ServiceDto;
 
 public interface WatchNotifier {
 

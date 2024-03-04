@@ -1,6 +1,6 @@
 package com.quarkus.developers.services.messaging.emitters;
 
-import com.quarkus.developers.services.messaging.events.ClusterResourceEvent;
+import com.quarkus.common.data.events.ClusterResourceEvent;
 import io.quarkus.arc.properties.IfBuildProperty;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -33,21 +33,21 @@ public class AmqpNotifier implements ManagedEmitter {
         event.setProducer("AMQP");
 
         Message<ClusterResourceEvent> message = Message.of(event, () -> {
-            log.debug("Acknowledged event {}", event);
+            log.debug("AMQP Emitter || Acknowledged event {}", event);
             // Called when the message is acknowledged.
             return CompletableFuture.completedFuture(null);
         },
         reason -> {
-            log.error("Error during emitting event {} on AMQP {}", event, reason.getLocalizedMessage(), reason);
+            log.error("AMQP Emitter || Error during emitting event {} on AMQP {}", event, reason.getLocalizedMessage(), reason);
             // Called when the message is acknowledged negatively.
             return CompletableFuture.completedFuture(null);
         });
 
         if(amqpEmitter.hasRequests()) {
-            log.info("Emitting event on AMQP Channel {}", event);
+            log.info("AMQP Emitter || Emitting event on AMQP Channel {}", event);
             amqpEmitter.send(message);
         } else {
-            log.warn("Unable to emit event on AMQP Channel because no subscribers found {}", event);
+            log.warn("AMQP Emitter || Unable to emit event on AMQP Channel because no subscribers found {}", event);
         }
     }
 }

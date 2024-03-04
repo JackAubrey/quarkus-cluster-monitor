@@ -29,7 +29,7 @@ class DeploymentWatchable implements WatchableItem {
         if(nameSpaces != null && !nameSpaces.isEmpty()) {
             List<WatchedItem> list = new ArrayList<>();
             nameSpaces.forEach(nameSpace -> {
-                log.info("Going to watch Deployment for the namespace: {}", nameSpace);
+                log.info(">> Going to watch Deployment for the namespace: {}", nameSpace);
                 Watch watched = client.apps().deployments().inNamespace(nameSpace).watch(deploymentWatcher);
                 list.add(new WatchedItem(nameSpace, watched));
             });

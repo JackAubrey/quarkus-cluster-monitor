@@ -1,4 +1,4 @@
-package com.quarkus.developers.services.messaging.events;
+package com.quarkus.common.data.events;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -11,5 +11,6 @@ public class ClusterResourceEvent {
     private String producer;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     private OffsetDateTime created;
-    private Map<String, Object> values;
+    private String payloadType;
+    private Map<String, Object> payloadContent;
 }

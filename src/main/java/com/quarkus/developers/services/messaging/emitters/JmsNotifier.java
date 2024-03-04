@@ -1,6 +1,6 @@
 package com.quarkus.developers.services.messaging.emitters;
 
-import com.quarkus.developers.services.messaging.events.ClusterResourceEvent;
+import com.quarkus.common.data.events.ClusterResourceEvent;
 import io.quarkus.arc.properties.IfBuildProperty;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -32,21 +32,21 @@ public class JmsNotifier implements ManagedEmitter {
         event.setProducer("JMS");
 
         Message<ClusterResourceEvent> message = Message.of(event, () -> {
-                    log.debug("Acknowledged event {}", event);
+                    log.debug("JMS Emitter || Acknowledged event {}", event);
                     // Called when the message is acknowledged.
                     return CompletableFuture.completedFuture(null);
                 },
                 reason -> {
-                    log.error("Error during emitting event {} on JMS {}", event, reason.getLocalizedMessage(), reason);
+                    log.error("JMS Emitter || Error during emitting event {} on JMS {}", event, reason.getLocalizedMessage(), reason);
                     // Called when the message is acknowledged negatively.
                     return CompletableFuture.completedFuture(null);
                 });
 
         if(jmsEmitter.hasRequests()) {
-            log.info("Emitting event on JMS Channel {}", event);
+            log.info("JMS Emitter || Emitting event on JMS Channel {}", event);
             jmsEmitter.send(message);
         } else {
-            log.warn("Unable to emit event on JMS Channel because no subscribers found {}", event);
+            log.warn("JMS Emitter || Unable to emit event on JMS Channel because no subscribers found {}", event);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.quarkus.developers.dtos;
+package com.quarkus.common.data.dtos;
 
 import lombok.Data;
 
@@ -12,6 +12,5 @@ public class BaseMetadataDto {
     private String deletionTimestamp;
     private Long deletionGracePeriodSeconds;
     private String generateName;
-    private Map<String, String> annotations;
     private Map<String, String> labels;
 }

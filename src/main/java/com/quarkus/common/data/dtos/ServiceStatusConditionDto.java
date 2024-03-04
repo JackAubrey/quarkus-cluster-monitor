@@ -1,9 +1,9 @@
-package com.quarkus.developers.dtos;
+package com.quarkus.common.data.dtos;
 
 import lombok.Data;
 
 @Data
-public class PodStatusConditionDto {
+public class ServiceStatusConditionDto {
     private String status;
     private String type;
     private String lastTransitionTime;

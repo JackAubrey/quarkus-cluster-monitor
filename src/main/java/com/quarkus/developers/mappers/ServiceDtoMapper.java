@@ -1,6 +1,6 @@
 package com.quarkus.developers.mappers;
 
-import com.quarkus.developers.dtos.ServiceDto;
+import com.quarkus.common.data.dtos.ServiceDto;
 import com.quarkus.developers.mappers.decoders.IntOrStringDecoder;
 import com.quarkus.developers.mappers.decoders.PodIPDecoder;
 import com.quarkus.developers.mappers.decoders.QuantityDecoder;
@@ -17,7 +17,6 @@ public interface ServiceDtoMapper {
     @Mapping(target = "metadata.deletionTimestamp", source = "metadata.deletionTimestamp")
     @Mapping(target = "metadata.deletionGracePeriodSeconds", source = "metadata.deletionGracePeriodSeconds")
     @Mapping(target = "metadata.generateName", source = "metadata.generateName")
-    @Mapping(target = "metadata.annotations", source = "metadata.annotations")
     @Mapping(target = "metadata.labels", source = "metadata.labels")
     @Mapping(target = "spec.clusterIPs", source = "spec.clusterIPs")
     @Mapping(target = "spec.ports", source = "spec.ports")

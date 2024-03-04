@@ -2,12 +2,13 @@ package com.quarkus.developers.services.watching;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.quarkus.developers.dtos.DeploymentDto;
-import com.quarkus.developers.dtos.PodDto;
-import com.quarkus.developers.dtos.ResourceQuotaDto;
-import com.quarkus.developers.dtos.ServiceDto;
+import com.quarkus.common.data.dtos.DeploymentDto;
+import com.quarkus.common.data.dtos.PodDto;
+import com.quarkus.common.data.dtos.ResourceQuotaDto;
+import com.quarkus.common.data.dtos.ServiceDto;
+import com.quarkus.developers.exceptions.WatchNotifierException;
 import com.quarkus.developers.services.messaging.emitters.ManagedEmitter;
-import com.quarkus.developers.services.messaging.events.ClusterResourceEvent;
+import com.quarkus.common.data.events.ClusterResourceEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import lombok.RequiredArgsConstructor;
@@ -47,10 +48,15 @@ public class WatchNotifierImpl implements WatchNotifier {
     }
 
     ClusterResourceEvent convert(Object object) {
-        Map<String, Object> values = objectMapper
-                .convertValue(object, new TypeReference<Map<String, Object>>() {});
-        ClusterResourceEvent event = new ClusterResourceEvent();
-        event.setValues(values);
-        return event;
+        try {
+
+            Map<String, Object> content = objectMapper.convertValue(object, new TypeReference<Map<String, Object>>() {});
+            ClusterResourceEvent event = new ClusterResourceEvent();
+            event.setPayloadContent(content);
+            event.setPayloadType(object.getClass().getCanonicalName());
+            return event;
+        } catch (Exception e) {
+            throw new WatchNotifierException("unable to convert object to ClusterResourceEvent", e);
+        }
     }
 }

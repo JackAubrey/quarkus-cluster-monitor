@@ -1,6 +1,6 @@
 package com.quarkus.developers.services.watching.watchers;
 
-import com.quarkus.developers.dtos.PodDto;
+import com.quarkus.common.data.dtos.PodDto;
 import com.quarkus.developers.mappers.PodEventMapper;
 import com.quarkus.developers.services.watching.WatchNotifier;
 import io.fabric8.kubernetes.api.model.Pod;

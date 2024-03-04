@@ -1,6 +1,6 @@
 package com.quarkus.developers.mappers;
 
-import com.quarkus.developers.dtos.DeploymentDto;
+import com.quarkus.common.data.dtos.DeploymentDto;
 import com.quarkus.developers.mappers.decoders.IntOrStringDecoder;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import org.mapstruct.Mapper;
@@ -15,7 +15,6 @@ public interface DeploymentDtoMapper {
     @Mapping(target = "metadata.deletionTimestamp", source = "metadata.deletionTimestamp")
     @Mapping(target = "metadata.deletionGracePeriodSeconds", source = "metadata.deletionGracePeriodSeconds")
     @Mapping(target = "metadata.generateName", source = "metadata.generateName")
-    @Mapping(target = "metadata.annotations", source = "metadata.annotations")
     @Mapping(target = "metadata.labels", source = "metadata.labels")
     @Mapping(target = "spec.minReadySeconds", source = "spec.minReadySeconds")
     @Mapping(target = "spec.paused", source = "spec.paused")
