@@ -49,7 +49,7 @@ public class WatchNotifierImpl implements WatchNotifier {
 
     ClusterResourceEvent convert(Object object) {
         try {
-            Map<String, Object> content = objectMapper.convertValue(object, new TypeReference<Map<String, Object>>() {});
+            Map<String, Object> content = objectMapper.convertValue(object, new TypeReference<>() {});
             ClusterResourceEvent event = new ClusterResourceEvent();
             event.setPayloadContent(content);
             event.setPayloadClass(object.getClass().getCanonicalName());
