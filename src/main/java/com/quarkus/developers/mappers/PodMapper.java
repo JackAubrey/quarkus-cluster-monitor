@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "jakarta", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {QuantityDecoder.class, PodIPDecoder.class})
-public interface PodEventMapper {
+public interface PodMapper {
     @Mapping(target = "metadata.name", source = "metadata.name")
     @Mapping(target = "metadata.namespace", source = "metadata.namespace")
     @Mapping(target = "metadata.creationTimestamp", source = "metadata.creationTimestamp")

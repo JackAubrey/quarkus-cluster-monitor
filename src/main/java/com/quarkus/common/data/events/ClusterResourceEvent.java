@@ -11,6 +11,6 @@ public class ClusterResourceEvent {
     private String producer;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
     private OffsetDateTime created;
-    private String payloadType;
+    private String payloadClass;
     private Map<String, Object> payloadContent;
 }

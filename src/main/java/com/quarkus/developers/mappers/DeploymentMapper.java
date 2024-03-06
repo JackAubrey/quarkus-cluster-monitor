@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "jakarta", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {IntOrStringDecoder.class})
-public interface DeploymentDtoMapper {
+public interface DeploymentMapper {
     @Mapping(target = "metadata.name", source = "metadata.name")
     @Mapping(target = "metadata.namespace", source = "metadata.namespace")
     @Mapping(target = "metadata.creationTimestamp", source = "metadata.creationTimestamp")

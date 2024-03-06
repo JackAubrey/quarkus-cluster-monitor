@@ -1,7 +1,7 @@
 package com.quarkus.developers.services.watching.watchers;
 
 import com.quarkus.common.data.dtos.ResourceQuotaDto;
-import com.quarkus.developers.mappers.ResourceQuotaDtoMapper;
+import com.quarkus.developers.mappers.ResourceQuotaMapper;
 import com.quarkus.developers.services.watching.WatchNotifier;
 import io.fabric8.kubernetes.api.model.ResourceQuota;
 import io.fabric8.kubernetes.client.Watcher;
@@ -15,8 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 @IfBuildProperty(name = "watcher.resource-quota.enabled", stringValue = "true")
 class ResourceQuotaWatcher implements Watcher<ResourceQuota> {
     private final WatchNotifier notifier;
-    private final ResourceQuotaDtoMapper mapper;
-    public ResourceQuotaWatcher(WatchNotifier notifier, ResourceQuotaDtoMapper mapper) {
+    private final ResourceQuotaMapper mapper;
+    public ResourceQuotaWatcher(WatchNotifier notifier, ResourceQuotaMapper mapper) {
         this.notifier = notifier;
         this.mapper = mapper;
         log.info("New ResourceQuotasWatcher created");

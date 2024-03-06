@@ -1,7 +1,7 @@
 package com.quarkus.developers.services.watching.watchers;
 
 import com.quarkus.common.data.dtos.ServiceDto;
-import com.quarkus.developers.mappers.ServiceDtoMapper;
+import com.quarkus.developers.mappers.ServiceMapper;
 import com.quarkus.developers.services.watching.WatchNotifier;
 import io.fabric8.kubernetes.api.model.Service;
 import io.fabric8.kubernetes.client.Watcher;
@@ -15,9 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 @IfBuildProperty(name = "watcher.service.enabled", stringValue = "true")
 class ServiceWatcher implements Watcher<Service> {
     private final WatchNotifier notifier;
-    private final ServiceDtoMapper mapper;
+    private final ServiceMapper mapper;
 
-    public ServiceWatcher(WatchNotifier notifier, ServiceDtoMapper mapper) {
+    public ServiceWatcher(WatchNotifier notifier, ServiceMapper mapper) {
         this.notifier = notifier;
         this.mapper = mapper;
         log.info("New ServicesWatcher created");

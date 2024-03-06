@@ -9,7 +9,7 @@ import java.time.OffsetDateTime;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
-abstract class AbstractChannelEmitter implements ManagedEmitter {
+abstract class AbstractManagedEmitter implements ManagedEmitter {
 
     @Override
     public void emit(ClusterResourceEvent event) {

@@ -1,7 +1,7 @@
 package com.quarkus.developers.services.watching.watchers;
 
 import com.quarkus.common.data.dtos.DeploymentDto;
-import com.quarkus.developers.mappers.DeploymentDtoMapper;
+import com.quarkus.developers.mappers.DeploymentMapper;
 import com.quarkus.developers.services.watching.WatchNotifier;
 import io.fabric8.kubernetes.api.model.apps.Deployment;
 import io.fabric8.kubernetes.client.Watcher;
@@ -15,9 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 @IfBuildProperty(name = "watcher.deployment.enabled", stringValue = "true")
 class DeploymentWatcher implements Watcher<Deployment> {
     private final WatchNotifier notifier;
-    private final DeploymentDtoMapper mapper;
+    private final DeploymentMapper mapper;
 
-    public DeploymentWatcher(WatchNotifier notifier, DeploymentDtoMapper mapper) {
+    public DeploymentWatcher(WatchNotifier notifier, DeploymentMapper mapper) {
         this.notifier = notifier;
         this.mapper = mapper;
         log.info("New DeploymentWatcher created");

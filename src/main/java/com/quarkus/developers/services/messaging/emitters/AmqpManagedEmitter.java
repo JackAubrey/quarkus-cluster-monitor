@@ -12,7 +12,7 @@ import org.eclipse.microprofile.reactive.messaging.OnOverflow;
 @Slf4j
 @ApplicationScoped
 @IfBuildProperty(name = "messaging.emit-to.amqp", stringValue = "true")
-public class AmqpEmitter extends AbstractChannelEmitter {
+public class AmqpManagedEmitter extends AbstractManagedEmitter {
     static final String EMITTER_NAME = "AMQP";
 
     @OnOverflow(OnOverflow.Strategy.DROP)

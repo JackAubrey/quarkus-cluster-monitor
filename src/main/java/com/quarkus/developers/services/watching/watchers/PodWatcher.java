@@ -1,7 +1,7 @@
 package com.quarkus.developers.services.watching.watchers;
 
 import com.quarkus.common.data.dtos.PodDto;
-import com.quarkus.developers.mappers.PodEventMapper;
+import com.quarkus.developers.mappers.PodMapper;
 import com.quarkus.developers.services.watching.WatchNotifier;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.Watcher;
@@ -15,9 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 @IfBuildProperty(name = "watcher.pod.enabled", stringValue = "true")
 class PodWatcher implements Watcher<Pod> {
     private final WatchNotifier notifier;
-    private final PodEventMapper mapper;
+    private final PodMapper mapper;
 
-    public PodWatcher(WatchNotifier notifier, PodEventMapper mapper) {
+    public PodWatcher(WatchNotifier notifier, PodMapper mapper) {
         this.notifier = notifier;
         this.mapper = mapper;
         log.info("New PodWatcher created");

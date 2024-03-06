@@ -11,17 +11,17 @@ import org.eclipse.microprofile.reactive.messaging.OnOverflow;
 
 @Slf4j
 @ApplicationScoped
-@IfBuildProperty(name = "messaging.emit-to.jms", stringValue = "true")
-public class JmsEmitter extends AbstractChannelEmitter {
-    static final String EMITTER_NAME = "JMS";
+@IfBuildProperty(name = "messaging.emit-to.kafka", stringValue = "true")
+public class KafkaManagedEmitter extends AbstractManagedEmitter {
+    static final String EMITTER_NAME = "KAFKA";
 
     @OnOverflow(OnOverflow.Strategy.DROP)
-    @Channel("jms-channel")
+    @Channel("kafka-channel")
     Emitter<ClusterResourceEvent> emitter;
 
     @PostConstruct
     void init() {
-        log.info("--> JmsNotifier ready");
+        log.info("--> KafkaNotifier ready");
     }
 
     @Override
