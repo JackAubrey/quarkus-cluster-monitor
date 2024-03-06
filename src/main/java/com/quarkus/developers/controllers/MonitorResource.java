@@ -2,10 +2,12 @@ package com.quarkus.developers.controllers;
 
 import com.quarkus.common.data.dtos.PodDto;
 import com.quarkus.common.data.dtos.ResourceQuotaDto;
+import com.quarkus.common.data.dtos.ServiceDto;
 import com.quarkus.developers.services.MonitorFacade;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.openshift.api.model.Project;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
@@ -59,5 +61,33 @@ public class MonitorResource {
     public Response listResourceQuotas(@PathParam("namespace") String namespace) {
         List<ResourceQuotaDto> list = monitorFacade.listResourceQuotas(namespace);
         return Response.ok(list, MediaType.APPLICATION_JSON_TYPE).build();
+    }
+
+    @GET()
+    @Path("/services")
+    public Response listServices() {
+        List<ServiceDto> list = monitorFacade.listServices();
+        return Response.ok(list, MediaType.APPLICATION_JSON_TYPE).build();
+    }
+
+    @GET()
+    @Path("/services/${namespace}")
+    public Response listServices(@PathParam("namespace") String namespace) {
+        List<ServiceDto> list = monitorFacade.listServices(namespace);
+        return Response.ok(list, MediaType.APPLICATION_JSON_TYPE).build();
+    }
+
+    @POST()
+    @Path("/services/notify")
+    public Response notifyServices() {
+        monitorFacade.notifyServices();
+        return Response.noContent().build();
+    }
+
+    @POST()
+    @Path("/services/notify/${namespace}")
+    public Response notifyServices(@PathParam("namespace") String namespace) {
+        monitorFacade.notifyServices(namespace);
+        return Response.noContent().build();
     }
 }

@@ -2,6 +2,7 @@ package com.quarkus.developers.services;
 
 import com.quarkus.common.data.dtos.PodDto;
 import com.quarkus.common.data.dtos.ResourceQuotaDto;
+import com.quarkus.common.data.dtos.ServiceDto;
 import io.fabric8.kubernetes.api.model.Namespace;
 import io.fabric8.openshift.api.model.Project;
 
@@ -18,4 +19,12 @@ public interface MonitorFacade {
     List<ResourceQuotaDto> listResourceQuotas();
 
     List<ResourceQuotaDto> listResourceQuotas(String namespace);
+
+    void notifyServices();
+
+    void notifyServices(String namespace);
+
+    List<ServiceDto> listServices();
+
+    List<ServiceDto> listServices(String namespace);
 }
