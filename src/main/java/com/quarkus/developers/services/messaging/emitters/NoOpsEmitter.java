@@ -9,7 +9,7 @@ import java.time.OffsetDateTime;
 
 @Slf4j
 @ApplicationScoped
-@IfBuildProperty(name = "messaging.notify-to.noOps", stringValue = "true")
+@IfBuildProperty(name = "messaging.emit-to.noOps", stringValue = "true")
 public class NoOpsEmitter implements ManagedEmitter {
     @Override
     public void emit(ClusterResourceEvent event) {

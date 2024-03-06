@@ -17,7 +17,6 @@ abstract class AbstractChannelEmitter implements ManagedEmitter {
         event.setProducer(getProducerName());
 
         Message<ClusterResourceEvent> message = Message.of(event, () -> {
-            log.debug("{} Emitter || Acknowledged event {}", getProducerName(), event);
             // Called when the message is acknowledged.
             return CompletableFuture.completedFuture(null);
         },
@@ -35,7 +34,7 @@ abstract class AbstractChannelEmitter implements ManagedEmitter {
         }
     }
 
-    protected abstract Emitter<ClusterResourceEvent> getEmitter();
+    abstract Emitter<ClusterResourceEvent> getEmitter();
 
-    protected abstract String getProducerName();
+    abstract String getProducerName();
 }

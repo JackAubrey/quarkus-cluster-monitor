@@ -19,8 +19,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -44,7 +42,7 @@ public class WatcherServiceContainer {
         future.thenAccept(result -> {
             log.info(">>>>>>>>>>>>>>>>>>>>> The Watchable Items has been initialized: {}", result);
             if(Boolean.TRUE.equals(result)) {
-                log.info(">>>>>>>>>>>>>>>>>>>>> Found {} Watchable.", instances.stream().count());
+                log.info(">>>>>>>>>>>>>>>>>>>>> Found {} Watchable.", instances.stream().toList().size());
                 AtomicInteger defInc = new AtomicInteger(deferWatchersInSec);
                 instances.forEach(watchableItem -> deferWatcherInit(watchableItem, defInc.getAndAdd(deferWatchersInSec)));
             } else {
@@ -54,6 +52,7 @@ public class WatcherServiceContainer {
     }
 
     void deferWatcherInit(WatchableItem watchableItem, int delay) {
+        log.info(">>> Deferring starting watcher {} in {} seconds", watchableItem.getClass().getName(), delay);
         CompletableFuture<Boolean> future = CompletableFuture.supplyAsync( () -> deferredOps(delay));
 
         future.thenAccept(result -> {
@@ -69,7 +68,7 @@ public class WatcherServiceContainer {
 
     boolean deferredOps(int seconds) {
         try {
-            TimeUnit.SECONDS.sleep(initialDelayInSeconds);
+            TimeUnit.SECONDS.sleep(seconds);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return false;
