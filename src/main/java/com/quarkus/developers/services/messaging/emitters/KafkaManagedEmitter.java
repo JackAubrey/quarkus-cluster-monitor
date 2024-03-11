@@ -1,19 +1,20 @@
 package com.quarkus.developers.services.messaging.emitters;
 
 import com.quarkus.common.data.events.ClusterResourceEvent;
-import io.quarkus.arc.properties.IfBuildProperty;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.eclipse.microprofile.reactive.messaging.OnOverflow;
 
 @Slf4j
 @ApplicationScoped
-@IfBuildProperty(name = "messaging.emit-to.kafka", stringValue = "true")
 public class KafkaManagedEmitter extends AbstractManagedEmitter {
     static final String EMITTER_NAME = "KAFKA";
+    @ConfigProperty(name = "messaging.emit-to.kafka", defaultValue = "false")
+    boolean enabled;
 
     @OnOverflow(OnOverflow.Strategy.DROP)
     @Channel("kafka-channel")
@@ -21,7 +22,12 @@ public class KafkaManagedEmitter extends AbstractManagedEmitter {
 
     @PostConstruct
     void init() {
-        log.info("--> KafkaNotifier ready");
+        log.info("--> KafkaNotifier enabled: {}", enabled);
+    }
+
+    @Override
+    boolean isEnabled() {
+        return enabled;
     }
 
     @Override

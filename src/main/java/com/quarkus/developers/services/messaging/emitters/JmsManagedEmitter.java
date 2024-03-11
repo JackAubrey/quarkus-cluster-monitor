@@ -1,19 +1,21 @@
 package com.quarkus.developers.services.messaging.emitters;
 
 import com.quarkus.common.data.events.ClusterResourceEvent;
-import io.quarkus.arc.properties.IfBuildProperty;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.eclipse.microprofile.reactive.messaging.OnOverflow;
 
 @Slf4j
 @ApplicationScoped
-@IfBuildProperty(name = "messaging.emit-to.jms", stringValue = "true")
 public class JmsManagedEmitter extends AbstractManagedEmitter {
     static final String EMITTER_NAME = "JMS";
+
+    @ConfigProperty(name = "messaging.emit-to.jms", defaultValue = "false")
+    boolean enabled;
 
     @OnOverflow(OnOverflow.Strategy.DROP)
     @Channel("jms-channel")
@@ -21,7 +23,12 @@ public class JmsManagedEmitter extends AbstractManagedEmitter {
 
     @PostConstruct
     void init() {
-        log.info("--> JmsNotifier ready");
+        log.info("--> JmsNotifier enabled: {}", enabled);
+    }
+
+    @Override
+    boolean isEnabled() {
+        return enabled;
     }
 
     @Override
